@@ -13,14 +13,26 @@
         if (message.length) {
           last = message.shift();
           _self.factor = Math.min(_self.width/last.width, _self.height/last.height);
-          while(message.length) {
-            current = message.shift();
-            context.beginPath();
-            context.moveTo(last.x*_self.factor, last.y*_self.factor);
-            context.lineTo(current.x*_self.factor, current.y*_self.factor);
-            context.stroke();
-            context.closePath();
-            last = current;
+          console.log(last.pen.type);
+          switch(last.pen.type) {
+            case 1:
+              while(message.length) {
+                current = message.shift();
+                context.beginPath();
+                context.moveTo(last.x*_self.factor, last.y*_self.factor);
+                context.lineTo(current.x*_self.factor, current.y*_self.factor);
+                context.stroke();
+                context.closePath();
+                last = current;
+              }
+              break;
+            case 2:
+              context.clearRect(last.x*_self.factor, last.y*_self.factor, 10, 10);
+              while(message.length) {
+                current = message.shift();
+                context.clearRect(current.x*_self.factor, current.y*_self.factor, 10, 10);
+              }
+              break;
           }
         }
       }, 500);
