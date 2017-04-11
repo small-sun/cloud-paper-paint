@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,24 @@
   <link rel="stylesheet" href="test.css">
   <title>Paint</title>
 </head>
+
 <body>
   <section>
     <div id="write">
+      <nav>
+        <select id="type">
+          <option value="1">铅笔</option>
+          <option value="2">橡皮</option>
+        </select>
+        <select id="size">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </nav>
     </div>
     <div id="read">
     </div>
@@ -23,6 +39,8 @@
   <script>
     let writter = new PaperWritter({
       el: document.getElementById('write'),
+      type: document.getElementById('type'),
+      size: document.getElementById('size'),
       height: 600,
       width: 600,
       url: 'server'
@@ -35,4 +53,5 @@
     });
   </script>
 </body>
+
 </html>
