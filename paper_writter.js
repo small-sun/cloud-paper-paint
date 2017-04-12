@@ -4,35 +4,34 @@
     constructor(obj) {
       this.width  = obj.width;
       this.height = obj.height;
-      this.lineWidth = obj.lineWidth || 1.0;
       this.color = obj.color || 'black';
-      obj.el.innerHTML =  `<nav>
-                  <select id="type">
-                    <option value="1">铅笔</option>
-                    <option value="2">橡皮</option>
-                  </select>
-                  <select id="size">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                  </select>
-                </nav>
-                <canvas width="${this.width}" height="${this.height}"></canvas>`;
-      let canvas = obj.el.querySelector('canvas');
-      let type = document.getElementById('type'); //笔型
-      let size = document.getElementById('size'); //笔的粗细
-      this.type = type.value;
-      this.size = size.value;
+      let node = document.createElement('canvas');
+      node.width = this.width;
+      node.height = this.height;
+      obj.el.appendChild(node);
+      // obj.el.innerHTML =  `<canvas width="${this.width}" height="${this.height}"></canvas>`;
+      const canvas = obj.el.querySelector('canvas');
+      const type = obj.type;
+      const size = obj.size;
+      this.type = parseInt(type.value); //笔型
+      this.size = parseInt(size.value); //笔的粗细
       this.init(canvas, type, size);
     }
 
     init (canvas, type, size) {
-      let context = canvas.getContext('2d');
-      let _self = this;
+      const context = canvas.getContext('2d');
+      const _self = this;
       let current, last; //记录上一次与本次事件的坐标
       let start = function (e) {
         e.preventDefault();
-        context.lineWidth = _self.lineWidth;
-        context.color = _self.color;
+        switch (_self.type) {
+          case 1:
+            context.lineWidth = _self.size;
+            context.color = _self.color;
+            break;
+          case 2:
+            break;
+        }
         last = _self.getInfo(e);
         message.push(last);
       };
@@ -40,22 +39,49 @@
         e.preventDefault();
         current = _self.getInfo(e);
         message.push(current);
-        context.beginPath();
-        context.moveTo(last.x, last.y);
-        context.lineTo(current.x, current.y);
-        context.stroke();
-        context.closePath();
+        switch (_self.type) {
+          case 1:
+            context.beginPath();
+            context.moveTo(last.x, last.y);
+            context.lineTo(current.x, current.y);
+            context.stroke();
+            context.closePath();
+            break;
+          case 2:
+            // 这里需要 CSS 光标样式
+            context.clearRect(current.x, current.y, 10, 10);
+            break;
+        }
         last = current;
       };
       let end = function (e) {
         e.preventDefault();
       };
-      type.addEventListener('change', e => {
-        this.type = e.target.value;
-      });
       size.addEventListener('change', e => {
         this.size = e.target.value;
       });
+
+      type.addEventListener('change', e => {
+        this.type = parseInt(e.target.value);
+/*        switch(this.type) {
+          case 1:
+            canvas.removeEventListener('touchmove', eraser, {passive: false});
+            canvas.removeEventListener('mousemove', eraser, {passive: false});
+            canvas.removeEventListener('click', text, {passive: false});
+            break;
+          case 2:
+            canvas.addEventListener('touchmove', eraser, {passive: false});
+            canvas.addEventListener('mousemove', eraser, {passive: false});
+            canvas.removeEventListener('click', text, {passive: false});
+            break;
+          case 3:
+            canvas.addEventListener('click', text, {passive: false});
+        }*/
+      });
+      this.bindEvent(canvas, start, move, end);
+    }
+
+    bindEvent (canvas, start, move, end) {
       canvas.addEventListener('touchstart', function (e) {
         start(e);
         canvas.addEventListener('touchmove',move , {passive: false});
