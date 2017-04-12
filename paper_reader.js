@@ -13,9 +13,10 @@
         if (message.length) {
           last = message.shift();
           _self.factor = Math.min(_self.width/last.width, _self.height/last.height);
-          console.log(last.pen.type);
           switch(last.pen.type) {
             case 1:
+              context.lineWidth = last.pen.size*_self.factor;
+              context.strokeStyle = last.pen.color;
               while(message.length) {
                 current = message.shift();
                 context.beginPath();
@@ -27,10 +28,10 @@
               }
               break;
             case 2:
-              context.clearRect(last.x*_self.factor, last.y*_self.factor, 10, 10);
+              context.clearRect(last.x*_self.factor, last.y*_self.factor, last.pen.size*3*_self.factor, last.pen.size*3*_self.factor);
               while(message.length) {
                 current = message.shift();
-                context.clearRect(current.x*_self.factor, current.y*_self.factor, 10, 10);
+                context.clearRect(current.x*_self.factor, current.y*_self.factor, last.pen.size*3*_self.factor, last.pen.size*3*_self.factor);
               }
               break;
           }
