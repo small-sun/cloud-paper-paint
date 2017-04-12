@@ -28,3 +28,20 @@ select {
   border: 1px solid transparent;
   box-sizing: border-box;
 }
+
+.text {
+    width: 60px;
+    min-height: 12px;
+    max-height: 300px;
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    padding: 3px;
+    outline: 0;
+    border: 1px solid #a0b3d6;
+    font-size: 12px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-user-modify: read-write-plaintext-only;
+}

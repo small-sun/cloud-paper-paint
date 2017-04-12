@@ -16,6 +16,7 @@
         <select id="type">
           <option value="1">铅笔</option>
           <option value="2">橡皮</option>
+          <option value="3">文字</option>
         </select>
         <select id="size">
           <option value="1">1</option>
@@ -24,6 +25,14 @@
           <option value="4">4</option>
           <option value="5">5</option>
           <option value="6">6</option>
+        </select>
+        <select id="color">
+          <option value="black">black</option>
+          <option value="red">red</option>
+          <option value="yellow">yellow</option>
+          <option value="green">green</option>
+          <option value="blue">blue</option>
+          <option value="cyan">cyan</option>
         </select>
       </nav>
     </div>
@@ -41,6 +50,7 @@
       el: document.getElementById('write'),
       type: document.getElementById('type'),
       size: document.getElementById('size'),
+      color: document.getElementById('color'),
       height: 600,
       width: 600,
       url: 'server'
