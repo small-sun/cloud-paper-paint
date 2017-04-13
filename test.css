@@ -1,8 +1,8 @@
-#write, #read, #write canvas {
+#write, #reader, #write canvas {
   border: 1px solid;
   border-radius: 5px;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 #write nav {
@@ -13,9 +13,9 @@
   z-index: 0;
 }
 
-select {
+button, select {
   margin: 5px;
-  padding: 10px 30px;
+  padding: 10px 15px;
   font-size: 20px;
   color: #fff;
   background-color: purple;

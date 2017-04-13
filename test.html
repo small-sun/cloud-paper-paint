@@ -13,13 +13,11 @@
   <section>
     <div id="write">
       <nav>
-        <select id="type">
-          <option value="1">铅笔</option>
-          <option value="2">橡皮</option>
-          <option value="3">文字</option>
-          <option value="4">矩形</option>
-          <option value="5">椭圆</option>
-        </select>
+        <button name="type" value="pen">铅笔</button>
+        <button name="type" value="eraser">橡皮</button>
+        <button name="type" value="text">文字</button>
+        <button name="type" value="rect">矩形</button>
+        <button name="type" value="ellipse">椭圆</button>
         <select id="size">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -36,33 +34,62 @@
           <option value="blue">blue</option>
           <option value="cyan">cyan</option>
         </select>
+        <div id="writter"></div>
       </nav>
     </div>
-    <div id="read">
+    <div id="reader">
     </div>
   </section>
   <script>
     window.message = []; // 临时作为消息队列
   </script>
   <script src="lib.js"></script>
+  <script src="paper_render.js"></script>
   <script src="paper_writter.js"></script>
   <script src="paper_reader.js"></script>
   <script>
     let writter = new PaperWritter({
-      el: document.getElementById('write'),
-      type: document.getElementById('type'),
-      size: document.getElementById('size'),
-      color: document.getElementById('color'),
+      el: '#writter',
       height: 600,
       width: 600,
-      url: 'server'
+      url: 'server',
+      /**
+       * 用户绘制时的回调函数
+       * @param {DrawEvent} di
+       * */
+      callback: function(di) {
+          /**
+           * 接受绘制事件（DrawEvent），在画布上画
+           * */
+          //  console.log(di.x, di.y);
+          reader.dispatch(di);
+      }
     });
     let reader = new PaperReader({
-      el: document.getElementById('read'),
+      el: '#reader',
       height: 650,
       width: 300,
       url: 'server'
     });
+    // 测试环境下绑定画图数据
+    function bindSelect(selector, obj, key){
+        let el = document.querySelector(selector);
+        obj[key] = el.value;
+        if (key === 'size') obj[key] = parseInt(el.value);
+        el.addEventListener('change', function(){
+            obj[key] =el.value;
+        });
+    }
+    function bindButton(selector, obj, key){
+        let el = document.querySelectorAll(selector);
+        obj[key] = el[0].value;
+        el.forEach(x => x.addEventListener('click', e => {
+          obj[key] = e.target.value;
+        }));
+    }
+    bindButton('button[name=type]' , writter, 'type');
+    bindSelect('#size' , writter, 'size');
+    bindSelect('#color', writter, 'color');
   </script>
 </body>
 

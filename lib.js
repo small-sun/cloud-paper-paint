@@ -1,4 +1,4 @@
-class Position {
+class DrawInfo {
   constructor (obj) {
     this.width = obj.width;
     this.height = obj.height;
