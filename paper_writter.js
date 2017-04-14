@@ -14,6 +14,7 @@
       this.type = 'pen'; //笔型
       this.size = parseInt(size.value); //笔的粗细
       this.color = color.value;
+      this.factor = 1;
       this.init();
     }
 
@@ -50,11 +51,10 @@
         this.last = this.getInfo(e);
         super.start();
         this.callback(this.last);
-        canvas.addEventListener('touchmove', this.move, {passive: false});
+        this.canvas.addEventListener('touchmove', this.move, {passive: false});
         document.addEventListener('touchend', function _self(e) {
-          console.log(that.last);
           that.end(e, that.last);
-          canvas.removeEventListener('touchmove', that.move, {passive: false});
+          that.canvas.removeEventListener('touchmove', that.move, {passive: false});
           document.removeEventListener('touchend', _self, {passive: false});
         }, {passive: false});
       }, {passive: false});

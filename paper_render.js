@@ -35,15 +35,15 @@
           this.drawLine(this.context, this.last, this.current);
           break;
         case 'eraser':
-          this.context.clearRect(this.current.x, this.current.y, this.size*10, this.size*10);
+          this.context.clearRect(this.current.x*this.factor, this.current.y*this.factor, this.size*10*this.factor, this.size*10*this.factor);
           break;
         case 'rect':
           this.layer.clearRect(0, 0, this.duplicate.width, this.duplicate.height);
-          this.layer.strokeRect(this.corner.x, this.corner.y, this.current.x-this.corner.x, this.current.y-this.corner.y);
+          this.layer.strokeRect(this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
         case 'ellipse':
           this.layer.clearRect(0, 0, this.duplicate.width, this.duplicate.height);
-          this.drawEllipse(this.layer, this.corner.x, this.corner.y, this.current.x-this.corner.x, this.current.y-this.corner.y);
+          this.drawEllipse(this.layer, this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
       }
       this.last = this.current;
@@ -52,10 +52,10 @@
     end () {
       switch(this.type) {
         case 'rect':
-          this.context.strokeRect(this.corner.x, this.corner.y, this.current.x-this.corner.x, this.current.y-this.corner.y);
+          this.context.strokeRect(this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
         case 'ellipse':
-          this.drawEllipse(this.context, this.corner.x, this.corner.y, this.current.x-this.corner.x, this.current.y-this.corner.y);
+          this.drawEllipse(this.context, this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
       }
     }
@@ -82,6 +82,8 @@
       duplicate.style.top = this.canvas.getBoundingClientRect().top+'px';
       duplicate.style['z-index'] = 1;
       layer = duplicate.getContext('2d');
+      layer.lineWidth = this.size;
+      layer.strokeStyle = this.color;
       document.body.appendChild(duplicate);
 
       duplicate.addEventListener('touchmove', this.move, {passive: false});
@@ -94,7 +96,6 @@
 
       duplicate.addEventListener('mousemove', this.move, {passive: false});
       document.addEventListener('mouseup', function _self(e) {
-        console.log('hello');
         that.end(e);
         duplicate.removeEventListener('mousemove', that.move, {passive: false});
         document.removeEventListener('mouseup', _self, {passive: false});
@@ -106,8 +107,8 @@
 
     drawLine (context, first, last) {
       context.beginPath();
-      context.moveTo(first.x, first.y);
-      context.lineTo(last.x, last.y);
+      context.moveTo(this.factor*first.x, this.factor*first.y);
+      context.lineTo(this.factor*last.x, this.factor*last.y);
       context.stroke();
       context.closePath();
     }
