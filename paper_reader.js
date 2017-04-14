@@ -26,7 +26,7 @@
         case ('mousedown'):
         case ('touchstart'):
           this.last = di;
-          console.log(di.type, di.pen.type);
+          // console.log(di.type, di.pen.type);
           super.start();
           break;
         case ('mousemove'):

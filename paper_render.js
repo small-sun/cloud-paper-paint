@@ -42,6 +42,11 @@
           this.layer.strokeRect(this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
         case 'ellipse':
+          // this.layer.clearRect(0, 0, this.duplicate.width, this.duplicate.height);
+          // this.context.beginPath();
+          // this.layer.ellipse((this.current.x+this.corner.x)*this.factor/2, (this.current.y+this.corner.y)*this.factor/2, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor, 0, 0, Math.PI*2);
+          // this.context.closePath();
+          // this.context.stroke();
           this.layer.clearRect(0, 0, this.duplicate.width, this.duplicate.height);
           this.drawEllipse(this.layer, this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
