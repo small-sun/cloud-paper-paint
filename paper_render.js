@@ -60,6 +60,10 @@
       }
     }
 
+    clear () {
+      this.context.clearRect(0, 0, this.width, this.height);
+    }
+
     writeText (e) {
       current = this.getInfo(e);
       let text = document.createElement('div');

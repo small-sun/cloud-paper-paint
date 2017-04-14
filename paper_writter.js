@@ -39,6 +39,12 @@
         super.end();
       };
 
+      this.clear = () => {
+        super.clear();
+        this.current = this.getInfo();
+        this.callback(this.current);
+      }
+
       this.bindCanvas();
     }
 
@@ -76,7 +82,13 @@
 
     getInfo (e, last) {
       let x, y;
-      if (e.type === 'touchend') { //touchend 和 mouseup 这两个事件比较奇葩，需要特殊处理
+      if (!e) {
+        e = {};
+        console.log(e);
+        x = 0;
+        y = 0;
+        e.type = 'clear';
+      } else if (e.type === 'touchend') { //touchend 和 mouseup 这两个事件比较奇葩，需要特殊处理
         x = this.last.x;
         y = this.last.y;
       } else if (e.type === 'mouseup') { //mouseup 有 x, y 坐标，不过先偷懒一下
@@ -85,14 +97,14 @@
       } else if (e.type.substring(0, 5) === 'touch') {
         x = e.touches[0].clientX - e.currentTarget.getBoundingClientRect().left;
         y = e.touches[0].clientY - e.currentTarget.getBoundingClientRect().top;
-      } else {
+      } else { //包含 mouse 事件与 click 事件
         x = e.clientX - e.currentTarget.getBoundingClientRect().left;
         y = e.clientY - e.currentTarget.getBoundingClientRect().top;
       }
       return new DrawInfo({
         width: this.width,
         height: this.height,
-        timeStamp: e.timeStamp,
+        timeStamp: new Date(),
         type: e.type,
         x: x,
         y: y,

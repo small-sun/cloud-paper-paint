@@ -34,6 +34,9 @@
           // console.log(this.last.x, this.last.y);
           this.last = this.current;
           break;
+        case ('clear'):
+          super.clear();
+          break;
       }
     }
   };

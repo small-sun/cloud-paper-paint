@@ -18,6 +18,7 @@
         <button name="type" value="text">文字</button>
         <button name="type" value="rect">矩形</button>
         <button name="type" value="ellipse">椭圆</button>
+        <button name="type" value="clear">清空</button>
         <select id="size">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -48,7 +49,7 @@
     let writter = new PaperWritter({
       el: '#writter',
       height: 600,
-      width: 600,
+      width: 800,
       url: 'server',
       /**
        * 用户绘制时的回调函数
@@ -82,6 +83,9 @@
         obj[key] = el[0].value;
         el.forEach(x => x.addEventListener('click', e => {
           obj[key] = e.target.value;
+          if (e.target.value === 'clear') {
+            writter.clear();
+          }
         }));
     }
     bindButton('button[name=type]' , writter, 'type');
