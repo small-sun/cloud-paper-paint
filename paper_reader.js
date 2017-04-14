@@ -18,17 +18,19 @@
 
     dispatch (di) {
       let current, last; //记录上一次与本次事件的坐标
-      console.log(di.type, di.pen.type);
       this.type = di.pen.type;
       this.size = di.pen.size;
       this.color = di.pen.color;
       this.factor = Math.min(this.width/di.width, this.height/di.height);
       switch(di.type) {
-        case ('mousedown' || 'touchstart'):
+        case ('mousedown'):
+        case ('touchstart'):
           this.last = di;
+          console.log(di.type, di.pen.type);
           super.start();
           break;
-        case ('mousemove' || 'touchmove'):
+        case ('mousemove'):
+        case ('touchmove'):
           this.current = di;
           super.move();
           // console.log(this.last.x, this.last.y);

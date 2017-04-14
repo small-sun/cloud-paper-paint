@@ -43,6 +43,7 @@
         super.clear();
         this.current = this.getInfo();
         this.callback(this.current);
+        this.type = 'pen';
       }
 
       this.bindCanvas();

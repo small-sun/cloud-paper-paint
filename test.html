@@ -83,10 +83,11 @@
         obj[key] = el[0].value;
         el.forEach(x => x.addEventListener('click', e => {
           obj[key] = e.target.value;
-          if (e.target.value === 'clear') {
-            writter.clear();
-          }
         }));
+    }
+
+    document.querySelector('button[value=clear]').onclick = e => {
+      writter.clear();
     }
     bindButton('button[name=type]' , writter, 'type');
     bindSelect('#size' , writter, 'size');
