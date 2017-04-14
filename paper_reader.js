@@ -1,42 +1,45 @@
 (function () {
   'use strict';
-  window.PaperReader = class PaperReader {
+  window.PaperReader = class PaperReader extends PaperRender {
     constructor(obj) {
+      super();
       this.width  = obj.width;
       this.height = obj.height;
-      obj.el.innerHTML =  `<canvas width="${this.width}" height="${this.height}"></canvas>`;
-      let canvas = obj.el.querySelector('canvas');
-      let context = canvas.getContext('2d');
+      this.callback = obj.callback;
+      let node = document.createElement('canvas');
+      node.width = this.width;
+      node.height = this.height;
+      document.querySelector(obj.el).appendChild(node);
+      this.canvas = node;
+      const canvas = node;
+      this.context = canvas.getContext('2d');
       let _self = this;
+    }
+
+    dispatch (di) {
       let current, last; //记录上一次与本次事件的坐标
-      setInterval(function () {
-        if (message.length) {
-          last = message.shift();
-          _self.factor = Math.min(_self.width/last.width, _self.height/last.height);
-          switch(last.pen.type) {
-            case 1:
-              context.lineWidth = last.pen.size*_self.factor;
-              context.strokeStyle = last.pen.color;
-              while(message.length) {
-                current = message.shift();
-                context.beginPath();
-                context.moveTo(last.x*_self.factor, last.y*_self.factor);
-                context.lineTo(current.x*_self.factor, current.y*_self.factor);
-                context.stroke();
-                context.closePath();
-                last = current;
-              }
-              break;
-            case 2:
-              context.clearRect(last.x*_self.factor, last.y*_self.factor, last.pen.size*3*_self.factor, last.pen.size*3*_self.factor);
-              while(message.length) {
-                current = message.shift();
-                context.clearRect(current.x*_self.factor, current.y*_self.factor, last.pen.size*3*_self.factor, last.pen.size*3*_self.factor);
-              }
-              break;
-          }
-        }
-      }, 500);
+      this.type = di.pen.type;
+      this.size = di.pen.size;
+      this.color = di.pen.color;
+      this.factor = Math.min(this.width/di.width, this.height/di.height);
+      switch(di.type) {
+        case ('mousedown'):
+        case ('touchstart'):
+          this.last = di;
+          // console.log(di.type, di.pen.type);
+          super.start();
+          break;
+        case ('mousemove'):
+        case ('touchmove'):
+          this.current = di;
+          super.move();
+          // console.log(this.last.x, this.last.y);
+          this.last = this.current;
+          break;
+        case ('clear'):
+          super.clear();
+          break;
+      }
     }
   };
 })();
